@@ -1,7 +1,8 @@
 const {
     getAllProducts,
     addProduct,
-    updateProduct : updateProductModel
+    updateProduct : updateProductModel,
+    deleteProduct : deleteProductModel
 } = require("../models/productModel");
 
 const getProducts = async(req,res) => {
@@ -40,9 +41,21 @@ const updateProduct = async (req,res) => {
 
     }
     };
-
+    const deleteProduct = async (req,res) => {
+        try {
+            const { id } = req.params;
+            const product = await deleteProductModel(id);
+            res.json(product);
+        } catch (error) {
+            console.log(error);
+            res.status(500).json({message: "Internal Server Error"});
+        }
+        };
+    
+    
 module.exports = {
     getProducts,
     createProduct,
-    updateProduct
+    updateProduct,
+    deleteProduct
 };
