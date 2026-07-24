@@ -4,9 +4,6 @@ const getAllProducts = async () => {
    const result = await pool.query("SELECT * FROM products");
    return result.rows;
 };
-module.exports = {
-    getAllProducts
-};
 
 const addProduct = async (name, category,price,quantity) => {
     const result = await pool.query(
@@ -17,7 +14,17 @@ const addProduct = async (name, category,price,quantity) => {
     
 };
 
+const updateProduct = async (id, name , category, price, quantity) => {
+    const result = await pool.query(
+        "UPDATE products SET name=$1, category=$2, price=$3, quantity=$4 WHERE id=$5 RETURNING*",
+        [name, category, price, quantity, id]
+    );
+    return result.rows[0];
+    
+};
+
 module.exports = {
     getAllProducts,
-    addProduct
+    addProduct,
+    updateProduct
 };
