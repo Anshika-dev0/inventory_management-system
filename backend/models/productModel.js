@@ -29,9 +29,15 @@ const deleteProduct = async (id) => {
         return result.rows[0];
     };
 
+const getProductByName = async (name) => {
+    const result = await pool.query("SELECT * FROM products WHERE name ILIKE $1", [`%${name}%`]);
+    return result.rows;
+};
 module.exports = {
     getAllProducts,
     addProduct,
     updateProduct,
-    deleteProduct
+    deleteProduct,
+    getProductByName
+
 };

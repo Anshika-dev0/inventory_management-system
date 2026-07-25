@@ -2,7 +2,8 @@ const {
     getAllProducts,
     addProduct,
     updateProduct : updateProductModel,
-    deleteProduct : deleteProductModel
+    deleteProduct : deleteProductModel,
+    getProductByName : getProductByNameModel
 } = require("../models/productModel");
 
 const getProducts = async(req,res) => {
@@ -51,11 +52,22 @@ const updateProduct = async (req,res) => {
             res.status(500).json({message: "Internal Server Error"});
         }
         };
+        const getProductByName = async (req,res) => {
+            try{
+                const { name } = req.params;
+                const product = await getProductByNameModel(name);
+                res.json(product);
+            } catch (error) {
+                console.log(error);
+                res.status(500).json({ message: "Internal Server Error" });
+            }
+            };
     
     
 module.exports = {
     getProducts,
     createProduct,
     updateProduct,
-    deleteProduct
+    deleteProduct,
+    getProductByName
 };
