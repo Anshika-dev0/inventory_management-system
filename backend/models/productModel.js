@@ -33,11 +33,24 @@ const getProductByName = async (name) => {
     const result = await pool.query("SELECT * FROM products WHERE name ILIKE $1", [`%${name}%`]);
     return result.rows;
 };
+
+const getProductByCategory = async (category) => {
+    const result = await pool.query(
+        "SELECT * FROM products WHERE category = $1",
+        [category]
+    );
+
+    return result.rows;
+};
+
+
 module.exports = {
     getAllProducts,
     addProduct,
     updateProduct,
     deleteProduct,
-    getProductByName
-
+    getProductByName,
+    getProductByCategory
 };
+
+ 

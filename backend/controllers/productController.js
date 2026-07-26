@@ -3,7 +3,8 @@ const {
     addProduct,
     updateProduct : updateProductModel,
     deleteProduct : deleteProductModel,
-    getProductByName : getProductByNameModel
+    getProductByName : getProductByNameModel,
+    getProductByCategory : getProductByCategoryModel
 } = require("../models/productModel");
 
 const getProducts = async(req,res) => {
@@ -62,6 +63,21 @@ const updateProduct = async (req,res) => {
                 res.status(500).json({ message: "Internal Server Error" });
             }
             };
+
+            const getProductByCategory = async (req, res) => {
+    try {
+        const { category } = req.params;
+
+        const products = await getProductByCategoryModel(category);
+
+        res.status(200).json(products);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({
+            message: "Internal Server Error"
+        });
+    }
+};
     
     
 module.exports = {
@@ -69,5 +85,6 @@ module.exports = {
     createProduct,
     updateProduct,
     deleteProduct,
-    getProductByName
+    getProductByName,
+    getProductByCategory
 };
