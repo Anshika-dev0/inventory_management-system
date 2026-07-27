@@ -4,7 +4,12 @@ const {
     updateProduct : updateProductModel,
     deleteProduct : deleteProductModel,
     getProductByName : getProductByNameModel,
-    getProductByCategory : getProductByCategoryModel
+    getProductByCategory : getProductByCategoryModel,
+    getLowStockProducts : getLowStockProductsModel,
+    getDashBoardStats : getDashBoardStatsModel,
+    getProductById : getProductByIdModel,
+    getProductsWithPagination : getProductsWithPaginationModel,
+    getProductsSortedByPrice : getProductsSortedByPriceModel
 } = require("../models/productModel");
 
 const getProducts = async(req,res) => {
@@ -78,13 +83,76 @@ const updateProduct = async (req,res) => {
         });
     }
 };
+const getLowStockProducts = async (req, res) => {
+    try {
+        const products = await getLowStockProductsModel();
+
+        res.status(200).json(products);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: "Internal Server Error" });
+    }
+    };
+
+const getDashBoardStats = async (req,res) => {
+    try {
+        const stats = await getDashBoardStatsModel();
+        res.json(stats);
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ message: "Internal Server Error" });
+    }
+    };
+const getProductById = async (req,res) => {
+    try {
+        const { id } = req.params;
+        const products = await getProductByIdModel(id);
+        res.status(200).json(products);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: "Internal Server Error" });
+
+    }
+    };
     
-    
+    const getProductsWithPagination = async (req,res) => {
+        try {
+            const page = parseInt(req.query.page);
+            const limit = parseInt(req.query.limit);
+            const offset = (page -1)*limit;
+            const products = await getProductsWithPaginationModel(limit, offset);
+            res.json(products);
+        } catch (error) {
+            console.error(error);
+            res.status(500).json({message: "Internal Server Error"});
+
+        }
+
+        };
+
+        const getProductsSortedByPrice = async (req,res) => {
+            try{
+                const { order} = req.query;
+
+                const products = await getProductsSortedByPriceModel(order);
+
+                res.json(products);
+            } catch (error) {
+                console.error(error);
+                res.status(500).json({message: "Internal Server Error"});
+
+            }
+        };
 module.exports = {
     getProducts,
     createProduct,
     updateProduct,
     deleteProduct,
     getProductByName,
-    getProductByCategory
+    getProductByCategory,
+    getLowStockProducts,
+    getDashBoardStats,
+    getProductById,
+    getProductsWithPagination,
+    getProductsSortedByPrice
 };

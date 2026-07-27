@@ -43,6 +43,31 @@ const getProductByCategory = async (category) => {
     return result.rows;
 };
 
+const getLowStockProducts = async () => {
+    const result = await pool.query("SELECT * FROM products WHERE quantity < 5");
+    return result.rows;
+};
+
+const getDashBoardStats = async () => {
+    const result = await pool.query(`SELECT COUNT(*) AS total_products, SUM(quantity) AS total_quantity,
+        COUNT(CASE WHEN quantity < 5 THEN 1 END) AS low_stock_products FROM products`);
+        return result.rows[0];
+};
+
+const getProductById = async (id) => {
+    const result = await pool.query("SELECT * FROM PRODUCTS WHERE id = $1", [id]);
+    return result.rows[0];
+};
+const getProductsWithPagination = async (limit, offset) => {
+    const result = await pool.query("SELECT * FROM products LIMIT $1 OFFSET $2", [limit, offset]);
+    return result.rows;
+};
+const getProductsSortedByPrice = async (order) => {
+    const sortOrder = order ==="desc" ? "DeSC" : "ASC";
+
+    const result = await pool.query(`SELECT * FROM products ORDER BY price ${sortOrder}`);
+    return result.rows;
+};
 
 module.exports = {
     getAllProducts,
@@ -50,7 +75,12 @@ module.exports = {
     updateProduct,
     deleteProduct,
     getProductByName,
-    getProductByCategory
+    getProductByCategory,
+    getLowStockProducts,
+    getDashBoardStats,
+    getProductById,
+    getProductsWithPagination,
+    getProductsSortedByPrice
 };
 
  
