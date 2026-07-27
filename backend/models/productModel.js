@@ -69,6 +69,15 @@ const getProductsSortedByPrice = async (order) => {
     return result.rows;
 };
 
+const getInStockProducts = async () => {
+    const result = await pool.query("SELECT * FROM products WHERE quantity >0");
+    return result.rows;
+};
+
+const getOutOfStockProducts = async () => {
+    const result = await pool.query("SELECT * FROM products WHERE quantity = 0");
+    return result.rows;
+};
 module.exports = {
     getAllProducts,
     addProduct,
@@ -80,7 +89,9 @@ module.exports = {
     getDashBoardStats,
     getProductById,
     getProductsWithPagination,
-    getProductsSortedByPrice
+    getProductsSortedByPrice,
+    getInStockProducts,
+    getOutOfStockProducts
 };
 
  

@@ -9,7 +9,9 @@ const {
     getDashBoardStats : getDashBoardStatsModel,
     getProductById : getProductByIdModel,
     getProductsWithPagination : getProductsWithPaginationModel,
-    getProductsSortedByPrice : getProductsSortedByPriceModel
+    getProductsSortedByPrice : getProductsSortedByPriceModel,
+    getInStockProducts : getInStockProductsModel,
+    getOutOfStockProducts : getOutOfStockProductsModel
 } = require("../models/productModel");
 
 const getProducts = async(req,res) => {
@@ -143,6 +145,27 @@ const getProductById = async (req,res) => {
 
             }
         };
+
+        const getInStockProducts = async (req,res) => {
+            try{
+                const products = await getInStockProductsModel();
+
+                res.json(products);
+            } catch (error) {
+                console.error(error);
+                res.status(500).json({message: "Internal server error"});
+            }
+            };
+
+            const getOutOfStockProducts = async (req,res) => {
+                try {
+                    const products = await getOutOfStockProductsModel();
+                    res.json(products);
+                } catch (error) {
+                    console.error(error);
+                    res.status(500).json({message: "Internal server error"});
+                }
+                };
 module.exports = {
     getProducts,
     createProduct,
@@ -154,5 +177,7 @@ module.exports = {
     getDashBoardStats,
     getProductById,
     getProductsWithPagination,
-    getProductsSortedByPrice
+    getProductsSortedByPrice,
+    getInStockProducts,
+    getOutOfStockProducts
 };
