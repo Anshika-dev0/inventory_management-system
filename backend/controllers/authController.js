@@ -1,6 +1,7 @@
 const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
 const{
-    registerUser : registerUserModel } = require("../models/authModel");
+    registerUser : registerUserModel, getUserByEmail : getUserByEmailModel } = require("../models/authModel");
 
     const registerUser = async (requestAnimationFrame,res) => {
         try{
@@ -20,7 +21,36 @@ const{
         }
     };
 
+    const loginUser = async (req,res) => {
+        try {
+            const { email, password } = req.body;
+            const user = await getUserByEmailModel(email);
+
+            if (!user) {
+                return res.status(404).json({message:"User not Found"});
+                
+            }
+            const isMatch = await bcrypt.compare(password,user.password);
+
+            if (!isMatch){
+                return res.status(401).json({message: "Invalid Password"});
+            }
+            const token = jwt.sign({id: user.id, email: user.email }, "mySecretKey",{
+                expiresIn: "1h"
+            });
+
+            res.json({
+                message: "Login Successful", token
+            });
+        } catch (error) {
+            console.log(error);
+
+            res.status(500).json({message: "Internal Server Error"});
+        }
+    };
+
     module.exports = {
-        registerUser
+        registerUser,
+        loginUser
    
 };
