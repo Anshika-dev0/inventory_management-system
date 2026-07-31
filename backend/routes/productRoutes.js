@@ -1,5 +1,6 @@
 const express = require("express");
 const router = express.Router();
+const verifyToken = require('../middleware/authMiddleware');
 
 const { getProducts, createProduct,updateProduct, deleteProduct, 
     getProductByName, getProductByCategory, getLowStockProducts, getDashBoardStats,
@@ -19,6 +20,7 @@ router.get("/products/low-stock", getLowStockProducts);
 router.get("/dashboard", getDashBoardStats);
 router.get("/products/:id", getProductById);
 router.get("/products/sort/price", getProductsSortedByPrice);
+router.post("/products",verifyToken, createProduct);
 
 
 module.exports = router;

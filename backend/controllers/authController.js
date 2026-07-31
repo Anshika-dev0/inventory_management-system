@@ -3,7 +3,7 @@ const jwt = require("jsonwebtoken");
 const{
     registerUser : registerUserModel, getUserByEmail : getUserByEmailModel } = require("../models/authModel");
 
-    const registerUser = async (requestAnimationFrame,res) => {
+    const registerUser = async (req,res) => {
         try{
             const { name, email, password} = requestAnimationFrame.body;
 
