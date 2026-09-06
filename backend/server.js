@@ -1,11 +1,13 @@
 const express = require('express');
+const cors = require("cors");
 require("./config/db");
 const productRoutes = require("./routes/productRoutes");
 
 
 const authRoutes = require("./routes/authRoutes");
 const app = express();
-
+app.use(cors({
+    origin:"http://localhost:3002"}));
 
 app.use(express.json());
 app.use(productRoutes);

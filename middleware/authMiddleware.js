@@ -5,7 +5,7 @@ const verifyToken = (req,res,next) => { //verify and send(next)
     console.log("Auth middleware");
     const authHeader = req.headers.authorization; //reads the authHeader
     if(!authHeader){
-        returnres.status(401).json({message: "Token not found"});//if taken not sended
+        return res.status(401).json({message: "Token not found"});//if taken not sended
 
     }
     const token = authHeader.split(" ")[1];
